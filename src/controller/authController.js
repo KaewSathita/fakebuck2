@@ -72,8 +72,12 @@ exports.login = async (req, res, next) => {
       throw new AppError("email address or mobile or password is invalid", 400);
     }
     const token = genToken({ id: user.id });
-    res.status(201).json({ token });
+    res.status(200).json({ token });
   } catch (err) {
     next(err);
   }
+};
+
+exports.getMe = (req, res, next) => {
+  res.status(200).json({ user: req.user });
 };
