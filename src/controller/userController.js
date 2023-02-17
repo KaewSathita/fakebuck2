@@ -57,7 +57,10 @@ exports.getUserFriends = async (req, res, next) => {
     }
 
     const friends = await friendService.findUserFriendsByUserId(id);
-    const statusWithMe = await friendService.findStatusWithMe(req.user.id, id);
+    const statusWithMe = await friendService.findStatusWithMe(
+      req.user.id,
+      parseInt(id)
+    );
     res.status(200).json({ user, friends, statusWithMe });
   } catch (err) {
     next(err);

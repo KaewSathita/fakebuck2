@@ -1,10 +1,11 @@
 const { Op } = require("sequelize");
 const {
   FRIEND_ACCEPTED,
-  FRIEND_STATUS_ANNONYMOUS,
+  FRIEND_STATUS_ANONYMOUS,
   FRIEND_STATUS_ACCEPTER,
   FRIEND_STATUS_REQUESTER,
   FRIEND_STATUS_FRIEND,
+  FRIEND_STATUS_ME,
 } = require("../config/constants");
 const { User, Friend } = require("../models");
 
@@ -29,8 +30,10 @@ exports.findUserFriendsByUserId = async (id) => {
 
 exports.findStatusWithMe = async (meId, userId) => {
   if (meId === userId) {
-    return;
+    return FRIEND_STATUS_ME;
   }
+  console.log(meId);
+  console.log(userId);
   const friend = await Friend.findOne({
     where: {
       [Op.or]: [
@@ -41,7 +44,7 @@ exports.findStatusWithMe = async (meId, userId) => {
   });
 
   if (!friend) {
-    return FRIEND_STATUS_ANNONYMOUS;
+    return FRIEND_STATUS_ANONYMOUS;
   }
   if (friend.status === FRIEND_ACCEPTED) {
     return FRIEND_STATUS_FRIEND;
